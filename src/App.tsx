@@ -124,11 +124,14 @@ let AddOrEdit = forwardRef<IAddOrEditRef, IProps>((props, forwardedRef) => {
             rules={[{ required: true }]}
             extra={
               <Space>
-                <Button type="default" onClick={() => handleSetTitle("海岛")}>
+                <Button type="default" onClick={() => handleSetTitle("海岛-官服")}>
                   海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("海岛国际")}>
+                <Button type="default" onClick={() => handleSetTitle("海岛-国际")}>
                   海岛国际
+                </Button>
+                <Button type="default" onClick={() => handleSetTitle("海岛-小米")}>
+                  海岛小米
                 </Button>
                 <Button type="default" onClick={() => handleSetTitle("部落")}>
                   部落
@@ -271,9 +274,6 @@ export default function HomePage() {
                   </Popconfirm>
                 </div>
               </div>
-              {/* <div className="flex items-center justify-between">
-                <div>{v.endTime}</div>
-              </div> */}
               <div className="flex items-center justify-between">
                 <div className="text-orange-600">{v.endTimeMoment.calendar()}</div>
                 <div>{v.endTime}</div>
