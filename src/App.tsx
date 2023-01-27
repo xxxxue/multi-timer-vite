@@ -1,5 +1,5 @@
 import { AppstoreAddOutlined, DeleteOutlined, EditOutlined, RedoOutlined } from "@ant-design/icons";
-import { useInterval, useUpdate } from "ahooks";
+import { useBoolean, useInterval, useUpdate } from "ahooks";
 import { Button, Form, Input, InputNumber, Modal, Popconfirm, Space } from "antd";
 import classNames from "classnames";
 import moment, { Moment } from "moment";
@@ -23,7 +23,7 @@ interface ITimerDataVO extends ITimerData {
   // moment 对象
   endTimeMoment: Moment;
   // 是否有效 (倒计时还没结束)
-  isValid : boolean;
+  isValid: boolean;
 }
 
 // 持久化
@@ -124,39 +124,40 @@ let AddOrEdit = forwardRef<IAddOrEditRef, IProps>((props, forwardedRef) => {
             rules={[{ required: true }]}
             extra={
               <Space>
-                <Button type="default" onClick={() => handleSetTitle("海岛-官服")}>
-                  海岛
+                <Button type="default" onClick={() => handleSetTitle("🚀海岛-官服")}>
+                  🚀官服海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("海岛-国际")}>
-                  海岛国际
+                <Button type="default" onClick={() => handleSetTitle("🚀海岛-国际")}>
+                  🚀国际海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("海岛-小米")}>
-                  海岛小米
+                <Button type="default" onClick={() => handleSetTitle("🚀海岛-单机")}>
+                  🚀单机海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("部落")}>
-                  部落
+                <Button type="default" onClick={() => handleSetTitle("🏠部落")}>
+                  🏠部落
                 </Button>
               </Space>
             }
           >
             <Input />
           </Form.Item>
+
           <Space>
             <Form.Item
               name="hour"
               initialValue={0}
               rules={[{ min: 0, max: 99999, type: "number" }]}
             >
-              <InputNumber size="large" min={0} max={99999} />
+              <InputNumber type="tel" size="large" min={0} max={99999} />
             </Form.Item>
-            <div className="mb-6">时</div>
+            <div className="mb-6">小时</div>
             <Form.Item name="minute" initialValue={0} rules={[{ min: 0, max: 59, type: "number" }]}>
-              <InputNumber size="large" min={0} max={59} />
+              <InputNumber type="tel" size="large" min={0} max={59} />
             </Form.Item>
             <div className="mb-6">分</div>
             <div className="mb-6">
               <Button type="primary" danger onClick={handleSetZero}>
-                置0
+                归0
               </Button>
             </div>
           </Space>
@@ -188,8 +189,8 @@ export default function HomePage() {
     timerListState.splice(index, 1);
   };
 
-  let update = useUpdate();
-  useInterval(update, 60000);
+  let [update, updateFn] = useBoolean(false);
+  useInterval(updateFn.toggle, 60000);
 
   let list = useMemo(() => {
     let ret: ITimerDataVO[] = [];
@@ -202,7 +203,7 @@ export default function HomePage() {
         ...v,
         endTimeMoment: endTime,
         endTime: endTime.format("MM-DD HH:mm:ss"),
-        isValid : moment().isBefore(endTime),
+        isValid: moment().isBefore(endTime),
       });
     });
 
@@ -217,17 +218,17 @@ export default function HomePage() {
 
     return [
       ...ret.filter((a) => {
-        return a.isValid  == true;
+        return a.isValid == true;
       }),
       ...ret.filter((a) => {
-        return a.isValid  == false;
+        return a.isValid == false;
       }),
     ];
-  }, [timerListSnap]);
+  }, [timerListSnap, update]);
 
   let handleDeleteAll = () => {
     list.map((a) => {
-      if (a.isValid  == false) {
+      if (a.isValid == false) {
         handleDelete(a.startTime);
       }
     });
@@ -237,7 +238,9 @@ export default function HomePage() {
       <AddOrEdit ref={addOrEditRef} />
       <div className="p-2 space-y-2">
         <div className="flex items-center justify-between">
-          {moment().format("YYYY.MM.DD hh:mm:ss")}
+          <div className="text-lg cursor-pointer" onClick={updateFn.toggle}>
+            {moment().format("MM.DD A h:mm:ss dddd")}
+          </div>
           <Popconfirm
             title="删除所有过期的定时器?"
             okText="确定"
@@ -247,44 +250,58 @@ export default function HomePage() {
           >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>
-          <Button icon={<AppstoreAddOutlined />} onClick={handleAdd} />
+          <Button size="large" icon={<AppstoreAddOutlined />} onClick={handleAdd} />
         </div>
-        {list.map((v, i) => {
-          return (
-            <div
-              key={v.startTime}
-              className={classNames(
-                "rounded-md  border-2 border-solid flex-row p-2 space-y-2",
-                v.isValid  ? "border-blue-400" : "border-red-500 bg-yellow-300 "
-              )}
-            >
-              <div className="flex justify-between items-center">
-                <div className="text-2xl text-red-500">{v.title}</div>
-                <div>{v.endTimeMoment.fromNow()}</div>
-
-                <div>
-                  <Popconfirm
-                    title="确定删除?"
-                    okText="确定"
-                    showCancel={false}
-                    placement="left"
-                    onConfirm={() => handleDelete(v.startTime)}
-                  >
-                    <Button danger icon={<DeleteOutlined />} />
-                  </Popconfirm>
+        <div className="space-y-4">
+          {list.map((v, i) => {
+            return (
+              <div
+                key={v.startTime}
+                className={classNames(
+                  "rounded-md  border-2 border-solid flex-row p-2 space-y-1 shadow-xl",
+                  v.isValid ? "border-blue-400" : "border-red-500 bg-yellow-300 "
+                )}
+              >
+                <div className="flex justify-between items-center">
+                  <div className="text-2xl text-red-500">{v.title}</div>
+                  <div>
+                    <Popconfirm
+                      title="确定删除?"
+                      okText="确定"
+                      showCancel={false}
+                      placement="left"
+                      onConfirm={() => handleDelete(v.startTime)}
+                    >
+                      <Button size="large" danger icon={<DeleteOutlined />} />
+                    </Popconfirm>
+                  </div>
+                  <div>{v.endTime}</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-2xl">{v.endTimeMoment.fromNow()}</div>
+                  <div className="text-orange-600">{v.endTimeMoment.calendar()}</div>
+                  <div className="flex space-x-3 items-center">
+                    <Popconfirm
+                      title="重置开始时间?"
+                      okText="确定"
+                      showCancel={false}
+                      placement="left"
+                      onConfirm={() => handleReset(v.startTime)}
+                    >
+                      <Button size="large" className="text-gray-400" icon={<RedoOutlined />} />
+                    </Popconfirm>
+                    <Button
+                      className="text-orange-500"
+                      size="large"
+                      icon={<EditOutlined />}
+                      onClick={() => handleEdit(v.startTime)}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <div className="text-orange-600">{v.endTimeMoment.calendar()}</div>
-                <div>{v.endTime}</div>
-                <div className="flex space-x-3">
-                  <Button icon={<RedoOutlined />} onClick={() => handleReset(v.startTime)} />
-                  <Button icon={<EditOutlined />} onClick={() => handleEdit(v.startTime)} />
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </>
   );
