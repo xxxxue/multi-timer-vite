@@ -124,16 +124,16 @@ let AddOrEdit = forwardRef<IAddOrEditRef, IProps>((props, forwardedRef) => {
             rules={[{ required: true }]}
             extra={
               <Space>
-                <Button type="default" onClick={() => handleSetTitle("🚀海岛-官服")}>
+                <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-官服")}>
                   🚀官服海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("🚀海岛-国际")}>
+                <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-国际")}>
                   🚀国际海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("🚀海岛-单机")}>
+                <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-单机")}>
                   🚀单机海岛
                 </Button>
-                <Button type="default" onClick={() => handleSetTitle("🏠部落")}>
+                <Button type="default" size="large" onClick={() => handleSetTitle("🏠部落")}>
                   🏠部落
                 </Button>
               </Space>
@@ -190,7 +190,7 @@ export default function HomePage() {
   };
 
   let [update, updateFn] = useBoolean(false);
-  useInterval(updateFn.toggle, 60000);
+  useInterval(updateFn.toggle, 5000);
 
   let list = useMemo(() => {
     let ret: ITimerDataVO[] = [];
@@ -232,6 +232,46 @@ export default function HomePage() {
         handleDelete(a.startTime);
       }
     });
+  };
+
+  let diffTime = (time: Moment | string) => {
+    let myTime: Moment = typeof time == "string" ? moment(time) : time;
+    let nowTime = moment();
+    let diff = moment.duration(myTime.diff(nowTime));
+    let isBefore = myTime.isBefore(nowTime);
+    let day = diff.days();
+    let hour = diff.hours();
+    let minute = diff.minutes();
+    let second = diff.seconds();
+    let ret: string[] = [];
+
+    // 将负数变为正数
+    function abs(num: number) {
+      if (num < 0) {
+        return Math.abs(num);
+      }
+      return num;
+    }
+
+    // 到期后,在时间前面添加 "-" 号
+    ret.push(isBefore ? "-" : "");
+
+    if (day != 0) {
+      ret.push(`${abs(day)}天`);
+    }
+    if (hour != 0) {
+      ret.push(`${abs(hour)}时`);
+    }
+    if (minute != 0) {
+      ret.push(`${abs(minute)}分`);
+    }
+    if (second != 0) {
+      ret.push(`${abs(second)}秒`);
+    }
+    // 结果:
+    // 21时 26分 19秒
+    // - 1分 2秒
+    return ret.join(" ");
   };
   return (
     <>
@@ -278,7 +318,7 @@ export default function HomePage() {
                   <div>{v.endTime}</div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl">{v.endTimeMoment.fromNow()}</div>
+                  <div className="text-2xl">{diffTime(v.endTimeMoment)}</div>
                   <div className="text-orange-600">{v.endTimeMoment.calendar()}</div>
                   <div className="flex space-x-3 items-center">
                     <Popconfirm
