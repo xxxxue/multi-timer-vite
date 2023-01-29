@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import "./index.css";
+
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
 
 import { ConfigProvider } from "antd";
 import "antd/dist/reset.css";
@@ -21,10 +23,15 @@ moment.locale("zh-cn", {
   },
 });
 
+
+
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ConfigProvider locale={zhCN}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </ConfigProvider>
   </React.StrictMode>
 );
