@@ -1,8 +1,9 @@
 import { UserOutlined } from "@ant-design/icons";
 import routes from "~react-pages";
 import { Layout, Menu, theme } from "antd";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+
 const { Header, Content } = Layout;
 const App = () => {
   const {
@@ -11,13 +12,14 @@ const App = () => {
 
   let nav = useNavigate();
   let location = useLocation();
+  console.log(location.pathname);
 
   let handleRouteLink = (path: string) => {
     nav(path);
   };
   return (
     <Layout className="h-screen">
-      <Header className="p-0">
+       <Header className="p-0">
         <Menu
           defaultSelectedKeys={[location.pathname]}
           theme="dark"
@@ -26,7 +28,7 @@ const App = () => {
             {
               key: "/Timer",
               icon: <UserOutlined />,
-              label: `定时器`,
+              label: "计时器",
               onClick: () => handleRouteLink("Timer"),
             },
             {
@@ -40,9 +42,10 @@ const App = () => {
       </Header>
       <Content className="p-4">
         <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
-          <Suspense fallback={<p>Loading...</p>}>{useRoutes(routes)}</Suspense>
+          <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
         </div>
       </Content>
+     
     </Layout>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import App from "./App";
 
 import { ConfigProvider } from "antd";
@@ -22,9 +22,6 @@ moment.locale("zh-cn", {
     sameElse: "YYYY.MM.DD HH:mm:ss",
   },
 });
-
-
-
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
