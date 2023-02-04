@@ -1,4 +1,4 @@
-import { UserOutlined } from "@ant-design/icons";
+import { FieldTimeOutlined, RedditOutlined } from "@ant-design/icons";
 import routes from "~react-pages";
 import { Layout, Menu, theme } from "antd";
 import { Suspense } from "react";
@@ -26,14 +26,14 @@ const App = () => {
           mode="horizontal"
           items={[
             {
-              key: "/Timer",
-              icon: <UserOutlined />,
+              key: "/",
+              icon: <FieldTimeOutlined />,
               label: "计时器",
-              onClick: () => handleRouteLink("Timer"),
+              onClick: () => handleRouteLink("/"),
             },
             {
               key: "/HaiDaoInfo",
-              icon: <UserOutlined />,
+              icon: <RedditOutlined />,
               label: `海岛信息`,
               onClick: () => handleRouteLink("HaiDaoInfo"),
             },
