@@ -1,15 +1,12 @@
 import { FieldTimeOutlined, RedditOutlined } from "@ant-design/icons";
 import routes from "~react-pages";
-import { Layout, Menu, theme } from "antd";
-import { Suspense } from "react";
+import { Layout, Menu } from "antd";
+import { Suspense, useRef, useState } from "react";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { useMount } from "ahooks";
 
-const { Header, Content } = Layout;
-const App = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
+const { Header, Content, Footer } = Layout;
+const Index = () => {
   let nav = useNavigate();
   let location = useLocation();
   console.log(location.pathname);
@@ -17,6 +14,15 @@ const App = () => {
   let handleRouteLink = (path: string) => {
     nav(path);
   };
+
+  const [version, setVersion] = useState<string>("");
+  useMount(() => {
+    fetch("/version.json")
+      .then((r) => r.json())
+      .then((r: { version: string }) => {
+        setVersion("版本号: " + r.version);
+      });
+  });
   return (
     <Layout className="h-screen">
       <Header className="p-0">
@@ -40,13 +46,12 @@ const App = () => {
           ]}
         />
       </Header>
-      <Content className="p-4">
-        <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
-          <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
-        </div>
+      <Content>
+        <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
       </Content>
+      <Footer className="text-center">{version}</Footer>
     </Layout>
   );
 };
 
-export default App;
+export default Index;

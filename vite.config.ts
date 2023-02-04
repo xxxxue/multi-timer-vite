@@ -2,18 +2,28 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import Pages from "vite-plugin-pages"
 import { VitePWA } from 'vite-plugin-pwa';
+import { resolve } from 'path';
+import versionUpdatePlugin from './plugin/versionUpdatePlugin';
+import moment from 'moment';
+
 export default defineConfig({
+  resolve: {
+    alias: [
+      { find: "@", replacement: resolve(__dirname, "./src") },
+    ]
+  },
   plugins: [
+
     react(),
     Pages(),
     VitePWA({
       workbox: {
         // 扩充筛选的规则 (默认是 js,css,html)
-        globPatterns: ["**/*.{js,css,html,ico,jpg,png,svg}"],
+        globPatterns: ["**/*.{js,css,html,ico,jpg,png,svg,json}"],
       },
       // 关闭自动注入 Manifest使用到的 icons, 
       //(否则会和 globPatterns 重复, 注入了两遍图片)
-      includeManifestIcons: false,      
+      includeManifestIcons: false,
       registerType: 'autoUpdate',
       manifest: {
         lang: 'zh-cn',
@@ -37,6 +47,9 @@ export default defineConfig({
         background_color: "#000000",
         theme_color: "#000000"
       }
+    }),
+    versionUpdatePlugin({
+      version: moment().format("YYYY-MM-DD HH:mm:ss")
     })
   ],
 })

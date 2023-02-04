@@ -1,12 +1,11 @@
 import { FC, memo } from "react";
-import danji from "../assets/haidao-danji.jpg";
-import diaoxiang from "../assets/haidao-diaoxiang.png";
+import Index from "@/components/HaiDaoInfo/Index";
+
 interface IProps {}
 let HaiDaoInfo: FC<IProps> = function (props) {
   return (
     <>
-      <img src={danji} />
-      <img src={diaoxiang} />
+      <Index />
     </>
   );
 };

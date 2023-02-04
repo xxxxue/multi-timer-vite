@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import { HashRouter as Router } from "react-router-dom";
-import App from "./App";
+import Index from "@/components/Layout/Index";
 
 import { ConfigProvider } from "antd";
 import "antd/dist/reset.css";
@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ConfigProvider locale={zhCN}>
       <Router>
-        <App />
+        <Index />
       </Router>
     </ConfigProvider>
   </React.StrictMode>
