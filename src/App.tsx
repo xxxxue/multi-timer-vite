@@ -19,9 +19,9 @@ const App = () => {
   };
   return (
     <Layout className="h-screen">
-       <Header className="p-0">
+      <Header className="p-0">
         <Menu
-          defaultSelectedKeys={[location.pathname]}
+          selectedKeys={[location.pathname]}
           theme="dark"
           mode="horizontal"
           items={[
@@ -45,7 +45,6 @@ const App = () => {
           <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
         </div>
       </Content>
-     
     </Layout>
   );
 };
