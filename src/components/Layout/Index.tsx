@@ -13,16 +13,8 @@ const Index = () => {
 
   let handleRouteLink = (path: string) => {
     nav(path);
-  };
+  }; 
 
-  const [version, setVersion] = useState<string>("");
-  useMount(() => {
-    fetch("/version.json")
-      .then((r) => r.json())
-      .then((r: { version: string }) => {
-        setVersion("版本号: " + r.version);
-      });
-  });
   return (
     <Layout className="h-screen">
       <Header className="p-0">
@@ -49,7 +41,7 @@ const Index = () => {
       <Content>
         <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
       </Content>
-      <Footer className="text-center">{version}</Footer>
+      <Footer className="text-center">版本号: {process.env.m_version}</Footer>
     </Layout>
   );
 };

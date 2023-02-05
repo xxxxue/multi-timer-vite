@@ -3,9 +3,8 @@ import react from '@vitejs/plugin-react'
 import Pages from "vite-plugin-pages"
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
-import versionUpdatePlugin from './plugin/versionUpdatePlugin';
-import moment from 'moment';
-
+import momentTz from 'moment-timezone';
+import envPlugin from 'vite-plugin-environment';
 export default defineConfig({
   resolve: {
     alias: [
@@ -16,10 +15,13 @@ export default defineConfig({
 
     react(),
     Pages(),
+    envPlugin({
+      "m_version": momentTz.tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm:ss")
+    }),
     VitePWA({
       workbox: {
         // 扩充筛选的规则 (默认是 js,css,html)
-        globPatterns: ["**/*.{js,css,html,ico,jpg,png,svg,json}"],
+        globPatterns: ["**/*.{js,css,html,ico,jpg,png,svg}"],
       },
       // 关闭自动注入 Manifest使用到的 icons, 
       //(否则会和 globPatterns 重复, 注入了两遍图片)
@@ -48,8 +50,7 @@ export default defineConfig({
         theme_color: "#000000"
       }
     }),
-    versionUpdatePlugin({
-      version: moment().format("YYYY-MM-DD HH:mm:ss")
-    })
+    //
+
   ],
 })
