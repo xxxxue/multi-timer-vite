@@ -34,7 +34,9 @@ export let AddOrEdit = forwardRef<IAddOrEditRef>((props, forwardedRef) => {
     formRef.validateFields().then((v) => {
       console.log(v);
       if (v.startTime != undefined) {
-        let index = timerListState.findIndex((a) => a.startTime === v.startTime);
+        let index = timerListState.findIndex(
+          (a) => a.startTime === v.startTime
+        );
 
         timerListState[index] = { ...v };
       } else {
@@ -76,26 +78,47 @@ export let AddOrEdit = forwardRef<IAddOrEditRef>((props, forwardedRef) => {
           <Form.Item name="startTime" noStyle>
             <Input type="hidden" />
           </Form.Item>
-          <Form.Item name="title" required label="标题" rules={[{ required: true }]}>
+          <Form.Item
+            name="title"
+            required
+            label="标题"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
 
           <Form.Item>
             <Space>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-官服")}>
+              <Button
+                type="default"
+                size="large"
+                onClick={() => handleSetTitle("🚀海岛-官服")}
+              >
                 🚀官服海岛
               </Button>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-国际")}>
+              <Button
+                type="default"
+                size="large"
+                onClick={() => handleSetTitle("🚀海岛-国际")}
+              >
                 🚀国际海岛
               </Button>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-单机")}>
+              <Button
+                type="default"
+                size="large"
+                onClick={() => handleSetTitle("🚀海岛-单机")}
+              >
                 🚀单机海岛
               </Button>
             </Space>
           </Form.Item>
           <Form.Item>
             <Space>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🏠部落")}>
+              <Button
+                type="default"
+                size="large"
+                onClick={() => handleSetTitle("🏠部落")}
+              >
                 🏠部落
               </Button>
             </Space>
@@ -110,7 +133,11 @@ export let AddOrEdit = forwardRef<IAddOrEditRef>((props, forwardedRef) => {
               <InputNumber type="tel" size="large" min={0} max={99999} />
             </Form.Item>
             <div className="mb-6">小时</div>
-            <Form.Item name="minute" initialValue={0} rules={[{ min: 0, max: 59, type: "number" }]}>
+            <Form.Item
+              name="minute"
+              initialValue={0}
+              rules={[{ min: 0, max: 59, type: "number" }]}
+            >
               <InputNumber type="tel" size="large" min={0} max={59} />
             </Form.Item>
             <div className="mb-6">分</div>

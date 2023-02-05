@@ -1,19 +1,17 @@
 import { FieldTimeOutlined, RedditOutlined } from "@ant-design/icons";
 import routes from "~react-pages";
 import { Layout, Menu } from "antd";
-import { Suspense, useRef, useState } from "react";
+import { Suspense } from "react";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
-import { useMount } from "ahooks";
 
 const { Header, Content, Footer } = Layout;
 const Index = () => {
   let nav = useNavigate();
   let location = useLocation();
-  console.log(location.pathname);
 
   let handleRouteLink = (path: string) => {
     nav(path);
-  }; 
+  };
 
   return (
     <Layout className="h-screen">
