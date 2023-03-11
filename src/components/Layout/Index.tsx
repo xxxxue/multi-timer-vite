@@ -4,7 +4,7 @@ import { Layout, Menu } from "antd";
 import { Suspense } from "react";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 const Index = () => {
   let nav = useNavigate();
   let location = useLocation();
@@ -33,13 +33,16 @@ const Index = () => {
               label: `海岛信息`,
               onClick: () => handleRouteLink("HaiDaoInfo"),
             },
+            {
+              key: "/version",
+              label: `版本号: ${process.env.m_version}`,
+            },
           ]}
         />
       </Header>
       <Content>
         <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
       </Content>
-      <Footer className="text-center">版本号: {process.env.m_version}</Footer>
     </Layout>
   );
 };
