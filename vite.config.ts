@@ -5,6 +5,14 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
 import envPlugin from 'vite-plugin-environment';
 import dayjs from 'dayjs';
+
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Shanghai');
+
 export default defineConfig({
   resolve: {
     alias: [
@@ -16,7 +24,8 @@ export default defineConfig({
     react(),
     Pages(),
     envPlugin({
-      "m_version": dayjs().format("YYYY-MM-DD HH:mm:ss")
+      // 版本号 (自动生成版本号,显示到页面上)
+      "m_version": dayjs().tz().format("YYYY-MM-DD HH:mm:ss")
     }),
     VitePWA({
       workbox: {
