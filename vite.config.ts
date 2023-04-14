@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 import Pages from "vite-plugin-pages"
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
-import momentTz from 'moment-timezone';
 import envPlugin from 'vite-plugin-environment';
+import dayjs from 'dayjs';
 export default defineConfig({
   resolve: {
     alias: [
@@ -16,7 +16,7 @@ export default defineConfig({
     react(),
     Pages(),
     envPlugin({
-      "m_version": momentTz.tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm:ss")
+      "m_version": dayjs().format("YYYY-MM-DD HH:mm:ss")
     }),
     VitePWA({
       workbox: {

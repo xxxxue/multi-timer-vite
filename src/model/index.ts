@@ -1,4 +1,4 @@
-import { Moment } from "moment";
+import { Dayjs } from "dayjs";
 
 export interface ITimerData {
   /** startTime 是该对象的唯一 ID */
@@ -17,7 +17,7 @@ export interface ITimerDataVO extends ITimerData {
   // 倒计时结束的时间
   endTime: string;
   // moment 对象
-  endTimeMoment: Moment;
+  endTimeDayjs: Dayjs;
   // 是否有效 (倒计时还没结束)
   isValid: boolean;
 }

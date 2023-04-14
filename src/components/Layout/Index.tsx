@@ -1,49 +1,41 @@
-import { FieldTimeOutlined, RedditOutlined } from "@ant-design/icons";
 import routes from "~react-pages";
-import { Layout, Menu } from "antd";
 import { Suspense } from "react";
-import { useLocation, useNavigate, useRoutes } from "react-router-dom";
-
-const { Header, Content } = Layout;
+import { useNavigate, useRoutes } from "react-router-dom";
+import { TabBar } from "antd-mobile";
+import { SearchOutline } from "antd-mobile-icons";
 const Index = () => {
   let nav = useNavigate();
-  let location = useLocation();
 
   let handleRouteLink = (path: string) => {
     nav(path);
   };
 
   return (
-    <Layout className="h-screen">
-      <Header className="p-0">
-        <Menu
-          selectedKeys={[location.pathname]}
-          theme="dark"
-          mode="horizontal"
-          items={[
-            {
-              key: "/",
-              icon: <FieldTimeOutlined />,
-              label: "计时器",
-              onClick: () => handleRouteLink("/"),
-            },
-            {
-              key: "/HaiDaoInfo",
-              icon: <RedditOutlined />,
-              label: `海岛信息`,
-              onClick: () => handleRouteLink("HaiDaoInfo"),
-            },
-            {
-              key: "/version",
-              label: `版本号: ${process.env.m_version}`,
-            },
-          ]}
-        />
-      </Header>
-      <Content>
+    <div >
+      <div className="pb-[49px]">
         <Suspense fallback={<p>loading...</p>}>{useRoutes(routes)}</Suspense>
-      </Content>
-    </Layout>
+      </div>
+      <TabBar
+        className="fixed bottom-0 left-0 right-0 bg-white"
+        onChange={(key) => {
+          console.log(key);
+
+          switch (key) {
+            case "Version":
+              alert(process.env.m_version);
+              break;
+
+            default:
+              handleRouteLink(key);
+              break;
+          }
+        }}
+      >
+        <TabBar.Item key="/" icon={<SearchOutline />} title="计时器" />
+        <TabBar.Item key="HaiDaoInfo" icon={<SearchOutline />} title="海岛信息" />
+        <TabBar.Item key="Version" icon={<SearchOutline />} title="版本号" />
+      </TabBar>
+    </div>
   );
 };
 

@@ -1,9 +1,8 @@
-import { Button, Form, Input, InputNumber, Modal, Space } from "antd";
-import moment from "moment";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { ITimerData } from "@/model";
 import { timerListState } from "@/store";
-
+import dayjs from "dayjs";
+import { Button, Form, Input, Popup } from "antd-mobile";
 export interface IAddOrEditRef {
   open: (v?: string) => void;
 }
@@ -23,7 +22,6 @@ export let AddOrEdit = forwardRef<IAddOrEditRef>((props, forwardedRef) => {
     setModalOpen(true);
     formRef.resetFields();
     if (v != undefined) {
-      console.log(v);
       let item = timerListState.find((a) => a.startTime === v)!;
 
       formRef.setFieldsValue(item);
@@ -32,13 +30,12 @@ export let AddOrEdit = forwardRef<IAddOrEditRef>((props, forwardedRef) => {
 
   let handleSubmit = () => {
     formRef.validateFields().then((v) => {
-      console.log(v);
       if (v.startTime != undefined) {
         let index = timerListState.findIndex((a) => a.startTime === v.startTime);
 
         timerListState[index] = { ...v };
       } else {
-        timerListState.push({ ...v, startTime: moment().toISOString() });
+        timerListState.push({ ...v, startTime: dayjs().toISOString() });
       }
       setModalOpen(false);
     });
@@ -62,72 +59,63 @@ export let AddOrEdit = forwardRef<IAddOrEditRef>((props, forwardedRef) => {
   };
   return (
     <>
-      <Modal
-        open={modalOpen}
-        onCancel={() => setModalOpen(false)}
-        closable={false}
-        footer={
-          <>
-            <Button size="large" type="primary" onClick={handleSubmit}>
-              确定
-            </Button>
-          </>
-        }
+      <Popup
+        visible={modalOpen}
+        onClose={() => setModalOpen(false)}
+        position="top"
+        closeOnMaskClick={true}
+        bodyStyle={{
+          borderBottomLeftRadius: "20px",
+          borderBottomRightRadius: "20px",
+          minHeight: "40vh",
+        }}
       >
-        <Form form={formRef} name="modalForm" autoComplete="off">
-          <Form.Item name="startTime" noStyle>
+        <Form form={formRef} name="modalForm" layout="horizontal">
+          <Form.Item name="startTime" hidden>
             <Input type="hidden" />
           </Form.Item>
-          <Form.Item name="title" required label="标题" rules={[{ required: true }]}>
+          <Form.Item
+            name="title"
+            required
+            label="标题"
+            rules={[{ required: true, message: "请输入标题" }]}
+          >
             <Input />
           </Form.Item>
 
           <Form.Item>
-            <Space>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-官服")}>
-                🚀官服海岛
-              </Button>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-国际")}>
-                🚀国际海岛
-              </Button>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🚀海岛-单机")}>
-                🚀单机海岛
-              </Button>
-            </Space>
+            <Button color="default" onClick={() => handleSetTitle("🚀海岛-官服")}>
+              🚀官服海岛
+            </Button>
+            <Button color="default" onClick={() => handleSetTitle("🚀海岛-国际")}>
+              🚀国际海岛
+            </Button>
+            <Button color="default" onClick={() => handleSetTitle("🚀海岛-单机")}>
+              🚀单机海岛
+            </Button>
+            <Button color="default" onClick={() => handleSetTitle("🏠部落")}>
+              🏠部落
+            </Button>
           </Form.Item>
-          <Form.Item>
-            <Space>
-              <Button type="default" size="large" onClick={() => handleSetTitle("🏠部落")}>
-                🏠部落
-              </Button>
-            </Space>
+          <Form.Item name="day" initialValue={0} label="天">
+            <Input type="tel" autoComplete="off"/>
           </Form.Item>
-
-          <Space>
-            <Form.Item name="day" initialValue={0} rules={[{ min: 0, max: 99999, type: "number" }]}>
-              <InputNumber type="tel" size="large" min={0} max={99999} />
-            </Form.Item>
-            <div className="mb-6">天</div>
-            <Form.Item
-              name="hour"
-              initialValue={0}
-              rules={[{ min: 0, max: 99999, type: "number" }]}
-            >
-              <InputNumber type="tel" size="large" min={0} max={99999} />
-            </Form.Item>
-            <div className="mb-6">时</div>
-            <Form.Item name="minute" initialValue={0} rules={[{ min: 0, max: 59, type: "number" }]}>
-              <InputNumber type="tel" size="large" min={0} max={59} />
-            </Form.Item>
-            <div className="mb-6">分</div>
-            <div className="mb-6">
-              <Button type="primary" danger onClick={handleSetZero}>
-                归0
-              </Button>
-            </div>
-          </Space>
+          <Form.Item name="hour" initialValue={0} label="小时">
+            <Input type="tel" autoComplete="off"/>
+          </Form.Item>
+          <Form.Item name="minute" initialValue={0} label="分钟">
+            <Input type="tel" autoComplete="off"/>
+          </Form.Item>
+          <div className="mb-6">
+            <Button color="danger" block size="large" onClick={handleSetZero}>
+              归0
+            </Button>
+          </div>
         </Form>
-      </Modal>
+        <Button size="large" block color="success" onClick={handleSubmit}>
+          确定
+        </Button>
+      </Popup>
     </>
   );
 });

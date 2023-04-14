@@ -1,12 +1,24 @@
 import { FC, memo } from "react";
 import danji from "@/assets/haidao-danji.jpg";
 import diaoxiang from "@/assets/haidao-diaoxiang.png";
-import { Image } from "antd";
-let Index: FC = function (props) {
+import { Image,ImageViewer } from 'antd-mobile';
+let Index: FC = function () {
+  let MyImageViewer = (path: string) => {
+    return (
+      <Image
+        src={path}
+        onClick={() => {
+          ImageViewer.show({
+            image: path,
+          });
+        }}
+      />
+    );
+  };
   return (
     <>
-      <Image src={danji} />
-      <Image src={diaoxiang} />
+      {MyImageViewer(danji)}
+      {MyImageViewer(diaoxiang)}
     </>
   );
 };
