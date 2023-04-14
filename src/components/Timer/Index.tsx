@@ -1,9 +1,4 @@
-import {
-  AppstoreAddOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  RedoOutlined,
-} from "@ant-design/icons";
+import { AppstoreAddOutlined, DeleteOutlined, EditOutlined, RedoOutlined } from "@ant-design/icons";
 import { useBoolean, useInterval } from "ahooks";
 import { Button, Popconfirm } from "antd";
 import classNames from "classnames";
@@ -44,6 +39,7 @@ function Index() {
 
     timerListSnap.map((v) => {
       let endTime = moment(v.startTime)
+        .add(v.day ?? 0, "d")
         .add(v.hour ?? 0, "h")
         .add(v.minute ?? 0, "m");
       ret.push({
@@ -137,11 +133,7 @@ function Index() {
           >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>
-          <Button
-            size="large"
-            icon={<AppstoreAddOutlined />}
-            onClick={handleAdd}
-          />
+          <Button size="large" icon={<AppstoreAddOutlined />} onClick={handleAdd} />
         </div>
         <div className="space-y-4">
           {list.map((v, i) => {
@@ -150,9 +142,7 @@ function Index() {
                 key={v.startTime}
                 className={classNames(
                   "rounded-md  border-2 border-solid flex-row p-2 space-y-1 shadow-xl",
-                  v.isValid
-                    ? "border-blue-400"
-                    : "border-red-500 bg-yellow-300 "
+                  v.isValid ? "border-blue-400" : "border-red-500 bg-yellow-300 "
                 )}
               >
                 <div className="flex justify-between items-center">
@@ -172,9 +162,7 @@ function Index() {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="text-2xl">{diffTime(v.endTimeMoment)}</div>
-                  <div className="text-orange-600">
-                    {v.endTimeMoment.calendar()}
-                  </div>
+                  <div className="text-orange-600">{v.endTimeMoment.calendar()}</div>
                   <div className="flex space-x-3 items-center">
                     <Popconfirm
                       title="重置开始时间?"
@@ -183,11 +171,7 @@ function Index() {
                       placement="left"
                       onConfirm={() => handleReset(v.startTime)}
                     >
-                      <Button
-                        size="large"
-                        className="text-gray-400"
-                        icon={<RedoOutlined />}
-                      />
+                      <Button size="large" className="text-gray-400" icon={<RedoOutlined />} />
                     </Popconfirm>
                     <Button
                       className="text-orange-500"

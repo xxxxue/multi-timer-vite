@@ -5,6 +5,8 @@ export interface ITimerData {
   startTime: string;
   // 标题
   title: string;
+  //天
+  day: number;
   // 小时
   hour: number;
   // 分钟
