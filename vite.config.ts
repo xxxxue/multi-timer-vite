@@ -11,7 +11,6 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.tz.setDefault('Asia/Shanghai');
 
 export default defineConfig({
   resolve: {
@@ -20,12 +19,11 @@ export default defineConfig({
     ]
   },
   plugins: [
-
     react(),
     Pages(),
     envPlugin({
       // 版本号 (自动生成版本号,显示到页面上)
-      "m_version": dayjs().tz().format("YYYY-MM-DD HH:mm:ss")
+      "m_version": dayjs().tz('Asia/Shanghai').format("YYYY-MM-DD HH:mm:ss")
     }),
     VitePWA({
       workbox: {

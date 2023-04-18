@@ -17,13 +17,14 @@ dayjs.extend(timezone);
 
 dayjs.updateLocale('zh-cn', {
   // A : 上午/下午/晚上 , dddd: 星期
+   // lastDay: 'YYYY.MM.DD [昨天] A h:mm dddd',
   calendar: {
-    lastDay: 'YYYY.MM.DD [昨天] A h:mm dddd',
-    sameDay: 'YYYY.MM.DD [今天] A h:mm dddd',
-    nextDay: 'YYYY.MM.DD [明天] A h:mm dddd',
-    lastWeek: 'YYYY.MM.DD A h:mm [上]dddd',
-    nextWeek: 'YYYY.MM.DD A h:mm [下]dddd',
-    sameElse: 'YYYY.MM.DD A h:mm dddd',
+    lastDay: '[昨天] A h:mm ',
+    sameDay: '[今天] A h:mm ',
+    nextDay: '[明天] A h:mm ',
+    lastWeek: 'A h:mm [上]dddd',
+    nextWeek: 'A h:mm [下]dddd',
+    sameElse: 'YYYY.MM.DD',
   },
 });
 // 设置语言

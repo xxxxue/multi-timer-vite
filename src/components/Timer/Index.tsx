@@ -47,7 +47,7 @@ function Index() {
       ret.push({
         ...v,
         endTimeDayjs: endTime,
-        endTime: endTime.format("MM-DD HH:mm:ss"),
+        endTime: endTime.format("YYYY-MM-DD HH:mm:ss"),
         isValid: dayjs().isBefore(endTime),
       });
     });
@@ -128,7 +128,7 @@ function Index() {
     //  1月 29天 23时 58分 28秒
     // 21时 26分 19秒
     // - 1分 2秒
-    return ret.join(" ");
+    return ret.join("");
   };
   return (
     <>
